@@ -1,5 +1,5 @@
-import pid as pid
-import pwm as pwm
+import pid
+import pwm
 import Adafruit_DHT
 from time import sleep
 import os
@@ -11,7 +11,7 @@ p = pid.PID(1,1,0.02, Integrator_max=100, Integrator_min=0)
 p.setPoint(29.0)
 
 
-pwm_control = pwm.PWM(1000,0)
+pwm_control = pwm.PWM(1000, 0, 0, 12)
 
 while True:
     sleep(.5)
