@@ -1,0 +1,30 @@
+<LifeGo>:
+    id: _life_go
+    AnchorLayout:
+        anchor_x: 'left'
+        anchor_y: 'top'
+        Menu:
+            id: _menu
+            life_go: root
+            size_hint: None, 1
+            width: 185
+
+    AnchorLayout:
+        anchor_x: 'right'
+        anchor_y: 'top'
+        Informacion:
+            id: _informacion
+            size_hint: None, None
+            width: root.width - _menu.width
+            height: root.height - _ajuste.height
+
+    AnchorLayout:
+        anchor_x: 'right'
+        anchor_y: 'bottom'
+        Ajuste:
+            id: _ajuste
+            life_go: _life_go
+            orientation: 'vertical'
+            size_hint: None, None
+            height: 180
+            width: root.width - _menu.width

@@ -1,0 +1,20 @@
+<Ajuste@BoxLayout>
+    life_go: root
+    canvas.before:
+        Color:
+            rgb: 1, 1, 1
+        Rectangle:
+            pos: root.pos
+            size: root.width, root.height
+    Label:
+        text: str(root.parent.parent.temperaturaDeseada)
+        color: 0, 0, 0, 1
+        font_size: self.height*0.25
+    Button:
+        text: '+'
+        font_size: self.height*0.25
+        on_release: root.parent.parent.aumentarTemperaturaDeseada()
+    Button:
+        text: '-'
+        font_size: self.height*0.25
+        on_release: root.parent.parent.disminuirTemperaturaDeseada()
