@@ -1,4 +1,4 @@
-#Si lo corre desde la Pi, use la TERMINAL! 
+#Si lo corre desde la Pi, use la TERMINAL!
 import kivy
 import os, sys
 sys.path.insert(0, '/home/pi/Documents/LifeGo/LifeGo/Control')
@@ -18,19 +18,19 @@ class MyApp(App):
     def build(self):
         button1 = Button(text='Start', size_hint_x=None, width=100)
         button1.bind(on_press = self.start_lifego)
-        
+
         layout = GridLayout(cols=2, row_force_default=True, row_default_height=40)
         layout.add_widget(button1)
         layout.add_widget(Button(text='World 1'))
         layout.add_widget(Button(text='Hello 2', size_hint_x=None, width=100))
         layout.add_widget(Button(text='World 2'))
         return layout
-    
+
     def on_start(self):
-        
+
         sensor = Adafruit_DHT.AM2302
         pin = 23
-        
+
         Logger.info('va bien') #borrar esto
 
         p = pid.PID(-60, -0.02, 0, Integrator_max=100, Integrator_min=-100)
@@ -66,7 +66,7 @@ class MyApp(App):
 #App.get_running_app().stop()
 if __name__ == '__main__':
     MyApp().run()
-    
+
 
 
 
@@ -80,15 +80,15 @@ if __name__ == '__main__':
 ##class CoolApp(App):
 ##    icon = 'custom-kivy-icon.png'
 ##    title = 'Basic Application'
-##    
+##
 ##    def build(self):
 ##        return Button(text='Hello World')
-##    
+##
 ##    def on_start(self):
 ##        Logger.info('App: I\'m alive!')
-## 
+##
 ##    def on_stop(self):
 ##        Logger.critical('App: Aaaargh I\'m dying!')
-## 
+##
 ##if __name__ in ('__android__', '__main__'):
 ##    CoolApp().run()
