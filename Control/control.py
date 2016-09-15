@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-import pid
+import control.pid as pid
 import threading
 
 class Control:
@@ -35,7 +35,8 @@ class Control:
         self.PWM = GPIO.PWM(salida, frecuencia)
         self.PWM.start(ciclo)
 
-    def actualizar(self, temperatura):
+    def actualizar(self, sensorTemperatura):
+        temperatura = sensorTemperatura.getTemperaturaAmbiente()
         Ciclo = (self.pid.update(temperatura) / 24) * 100
         if Ciclo is not None:
             if (Ciclo < 0):
