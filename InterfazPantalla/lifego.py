@@ -24,10 +24,7 @@ class LifeGo(AnchorLayout):
     def __init__(self, **kwargs):
         super(LifeGo, self).__init__(**kwargs)
         self.temperaturaDeseada = 4
-        self.fan = None
-        self.PID = None
-        self.sensor = None
-        self.pin = None
+
 
     def init(self):
         self.sensor = Adafruit_DHT.AM2302

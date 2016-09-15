@@ -18,7 +18,7 @@ class TemperaturaAmbiente(threading.Thread):
         try:
             while self.corriendo:
                 humedad, temperatura = Adafruit_DHT.read_retry(self.sensor, self.pin)
-                if self.humedadAmbiente is not None and self.temperturaAmbiente is not None:
+                if humedad is not None and temperatura is not None:
                     self.humedadAmbiente = humedad
                     self.temperturaAmbiente = temperatura
         except:

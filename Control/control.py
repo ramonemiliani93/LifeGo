@@ -4,11 +4,10 @@ import threading
 
 class Control:
 
-    def __init__(self, P, I, D, temperatura, frecuencia = 500, ciclo = 100, salida = 12):
+    def __init__(self, P = -60, I = -0.02 , D = 0, frecuencia = 500, ciclo = 100, salida = 12):
         threading.Thread.__init__(self)
 
         self.corriendo = True
-        self.temperatura = temperatura
 
         # Inicio del PID con las constantes
         # y ajuste de su setpoint
@@ -44,3 +43,6 @@ class Control:
             elif (Ciclo > 100):
                 Ciclo = 100
             self.PWM.ChangeDutyCycle(Ciclo)
+
+    def setPoint(self, temperatura):
+        self.pid.set_point(temperatura)
