@@ -35,10 +35,10 @@ class TemperaturaAmbiente(threading.Thread):
 
 if __name__ == '__main__':
 
-temperaturaambiente = TemperaturaAmbiente()
-temperaturaambiente.start()
+    temperaturaambiente = TemperaturaAmbiente()
+    temperaturaambiente.start()
 
-while True:
-    sleep(10)
-    print('La humedad en este momento es {}'.format(temperaturaambiente.humedadAmbiente))
-    print('La temperatura en este momento es {}'.format(temperaturaambiente.temperturaAmbiente))
+    while True:
+        sleep(10)
+        print('La humedad en este momento es {}'.format(temperaturaambiente.humedadAmbiente))
+        print('La temperatura en este momento es {}'.format(temperaturaambiente.temperturaAmbiente))
