@@ -35,14 +35,17 @@ class Control:
         self.PWM.start(ciclo)
 
     def actualizar(self, sensorTemperatura):
-        temperatura = sensorTemperatura.getTemperaturaAmbiente()
-        Ciclo = (self.pid.update(temperatura) / 24) * 100
-        if Ciclo is not None:
-            if (Ciclo < 0):
-                Ciclo = 0
-            elif (Ciclo > 100):
-                Ciclo = 100
-            self.PWM.ChangeDutyCycle(Ciclo)
+        try:
+            temperatura = sensorTemperatura.getTemperaturaAmbiente()
+            Ciclo = (self.pid.update(temperatura) / 24) * 100
+            if Ciclo is not None:
+                if (Ciclo < 0):
+                    Ciclo = 0
+                elif (Ciclo > 100):
+                    Ciclo = 100
+                self.PWM.ChangeDutyCycle(Ciclo)
+        except:
+            print('No se pduo leer el hilo correspondiente al sensor')
 
     def setPoint(self, temperatura):
         self.pid.set_point(temperatura)
