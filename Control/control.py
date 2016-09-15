@@ -49,3 +49,8 @@ class Control:
 
     def setPoint(self, temperatura):
         self.pid.set_point(temperatura)
+
+if __name__ == '__main__':
+
+    control = Control()
+    control.start()
