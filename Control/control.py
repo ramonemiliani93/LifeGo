@@ -45,7 +45,7 @@ class Control:
                     Ciclo = 100
                 self.PWM.ChangeDutyCycle(Ciclo)
         except:
-            print('No se pduo leer el hilo correspondiente al sensor')
+            print('No se pudo leer el hilo correspondiente al sensor')
 
     def setPoint(self, temperatura):
         self.pid.set_point(temperatura)
