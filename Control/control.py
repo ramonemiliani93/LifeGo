@@ -1,7 +1,45 @@
 import RPi.GPIO as GPIO
 import pid
+import threading
 
+class Control:
 
-class Control(threading.Thread):
-    def __init__(self):
-        self.pin = 23
+    def __init__(self, P, I, D, temperatura, frecuencia = 500, ciclo = 100, salida = 12):
+        threading.Thread.__init__(self)
+
+        self.corriendo = True
+        self.temperatura = temperatura
+
+        # Inicio del PID con las constantes
+        # y ajuste de su setpoint
+        self.pid = pid.PID(P, I, D)
+        self.pid.set_point(6)
+
+        # Revisar si ya se establecio
+        # enumeracion en la Pi
+        if GPIO.setmode() is None or GPIO.setmode() is GPIO.BOARD:
+            GPIO.setmode(GPIO.BCM)
+
+        # Ajustar pines de salida para el
+        # puente h
+        GPIO.setup(16, GPIO.OUT)
+        GPIO.setup(21, GPIO.OUT)
+
+        GPIO.output(16, GPIO.HIGH)
+        GPIO.output(21, GPIO.LOW)
+
+        # Ajustar salida al pin establecido
+        GPIO.setup(salida, GPIO.OUT)
+
+        # Inicar PWM
+        self.PWM = GPIO.PWM(salida, frecuencia)
+        self.PWM.start(ciclo)
+
+    def actualizar(self, temperatura):
+        Ciclo = (self.pid.update(temperatura) / 24) * 100
+        if Ciclo is not None:
+            if (Ciclo < 0):
+                Ciclo = 0
+            elif (Ciclo > 100):
+                Ciclo = 100
+            self.PWM.ChangeDutyCycle(Ciclo)

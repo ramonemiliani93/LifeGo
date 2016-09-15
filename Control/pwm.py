@@ -15,11 +15,12 @@ class PWM:
         self.cycle = cycle
         self.output = output
 
-        GPIO.setmode(GPIO.BCM)
+        if GPIO.setmode() is None or GPIO.setmode() is GPIO.BOARD:
+            GPIO.setmode(GPIO.BCM)
+
         GPIO.setup(output, GPIO.OUT)
 
         self.PWM_control = GPIO.PWM(output, frequency)
-        PWM_control = GPIO.PWM(output, frequency)
 
     def setFrequency(self, new_frequency):
         self.frequency = new_frequency
