@@ -1,10 +1,10 @@
 import os, sys
 sys.path.insert(0, '/home/pi/Documents/LifeGo/LifeGo/Control')
-import pid
-import pwm
-import Adafruit_DHT
-import RPi.GPIO as GPIO
-from time import sleep
+sys.path.insert(0, '/home/pi/Documents/LifeGo/LifeGo/Sensores')
+
+import control
+import ambiente
+import threading
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -23,56 +23,28 @@ class LifeGo(AnchorLayout):
 
     def __init__(self, **kwargs):
         super(LifeGo, self).__init__(**kwargs)
+        self.control = control.Control()
+        self.ambiente = ambiente.TemperaturaAmbiente()
+        self.ambiente.start()
+        threading.Thread(target=control.actualizar, args=(ambiente,)).start()
         self.temperaturaDeseada = 4
-
-
-    def init(self):
-        self.sensor = Adafruit_DHT.AM2302
-        self.pin = 23
-
-        Logger.info('va bien') #borrar esto
-
-        self.PID = pid.PID(-60, -0.02, 0, Integrator_max=100, Integrator_min=-100)
-        self.PID.setPoint(self.temperaturaDeseada)
-
-        GPIO.setmode(GPIO.BCM)
-
-        GPIO.setup(16, GPIO.OUT)
-        GPIO.setup(21, GPIO.OUT)
-
-        GPIO.output(16, GPIO.HIGH)
-        GPIO.output(21, GPIO.LOW)
-
-        self.fan = pwm.PWM(500, 0, 0, 12)
+        control.setPoint(self.temperaturaDeseada)
 
     def disminuirTemperaturaDeseada(self):
         self.temperaturaDeseada -= 1
-        self.PID.setPoint(self.temperaturaDeseada)
+        self.control.setPoint(self.temperaturaDeseada)
         Logger.info(str(self.temperaturaDeseada))
 
     def aumentarTemperaturaDeseada(self):
         self.temperaturaDeseada += 1
-        self.PID.setPoint(self.temperaturaDeseada)
+        self.control.setPoint(self.temperaturaDeseada)
         Logger.info(str(self.temperaturaDeseada))
 
-    def updateSensor(self, dt):
-        humidity, temperature = Adafruit_DHT.read_retry(self.sensor, self.pin)
-        Logger.info(str(temperature)) #borrar esto
-        Ciclo = (self.PID.update(temperature)/24)*100
-        Logger.info(str(Ciclo))
-        try :
-                self.fan.setCycle(Ciclo)
-
-        except :
-                print('No se pudo leer el sensor')
 
 class LifeGoApp(App):
 
     def build(self):
-        lifego = LifeGo()
-        lifego.init()
-        Clock.schedule_interval(lifego.updateSensor, 30)
-        return lifego
+        return LifeGo()
 
 if __name__ == '__main__':
     LifeGoApp().run()
