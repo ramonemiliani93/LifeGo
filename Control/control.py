@@ -4,17 +4,19 @@ import RPi.GPIO as GPIO
 import threading
 import pid
 import ambiente
+import organo
 from time import sleep
+import datetime
 
 class Control:
 
-    def __init__(self, P = -35, I = -0.02 , D = 0, frecuencia = 1000, ciclo = 100, salida = 12):
+    def __init__(self, P = -35, I = -0.02 , D = 0, frecuencia = 1000, ciclo = 100, salida = 13):
         self.corriendo = True
 
         # Inicio del PID con las constantes
         # y ajuste de su setpoint
         self.pid = pid.PID(P, I, D)
-        self.pid.setPoint(15)
+        self.pid.setPoint(-500)
 
         # Revisar si ya se establecio
         # enumeracion en la Pi
@@ -23,11 +25,11 @@ class Control:
 
         # Ajustar pines de salida para el
         # puente h
+        GPIO.setup(12, GPIO.OUT)
         GPIO.setup(16, GPIO.OUT)
-        GPIO.setup(21, GPIO.OUT)
 
-        GPIO.output(16, GPIO.HIGH)
-        GPIO.output(21, GPIO.LOW)
+        GPIO.output(12, GPIO.HIGH)
+        GPIO.output(16, GPIO.LOW)
 
         # Ajustar salida al pin establecido
         GPIO.setup(salida, GPIO.OUT)
@@ -36,13 +38,17 @@ class Control:
         self.PWM = GPIO.PWM(salida, frecuencia)
         self.PWM.start(ciclo)
 
-    def actualizar(self, sensorTemperatura):
+    def actualizar(self, sensorTemperatura, sensorOrgano):
         while self.corriendo:
             sleep(5)
             print('Actualizando PID...')
             try:
+                organo = sensorOrgano.getTemperaturaOrgano()
                 temperatura = sensorTemperatura.getTemperaturaAmbiente()
-                print(('Temperatura: {}'.format(temperatura)))
+                humedad = sensorTemperatura.getHumedadAmbiente()
+                print(('Temperatura Organo: {}'.format(organo)))
+                print(('Temperatura Ambiente: {}'.format(temperatura)))
+                print(('Humedad: {}'.format(humedad)))
                 Ciclo = (self.pid.update(temperatura) / 24) * 100
                 print(('Ciclo: {}'.format(Ciclo)))
                 if Ciclo is not None:
@@ -51,17 +57,28 @@ class Control:
                     elif (Ciclo > 100):
                         Ciclo = 100
                     self.PWM.ChangeDutyCycle(Ciclo)
+                ######################LOGGER#####################
+                f=open('datos.txt','a')
+                now = datetime.datetime.now()
+                timestamp = now.strftime("%H:%M:%S")
+                outstring = str(timestamp)+","+str(temperatura)+","+str(humedad)+","+str(organo)+"\n"
+                f.write(outstring)
+                f.close()
+                #################################################
             except:
                 print('No se pudo leer el hilo correspondiente al sensor')
 
     def setPoint(self, temperatura):
-        self.pid.set_point(temperatura)
+        self.pid.setPoint(temperatura)
 
 if __name__ == '__main__':
     print('Inicio Control')
     control = Control()
-    print('Hilo temperatura')
+    temperaturaorgano = organo.TemperaturaOrgano()
+    print('Hilo temperatura organo')
     temperaturaambiente = ambiente.TemperaturaAmbiente()
+    print('Hilo temperatura ambiente')
+    temperaturaorgano.start()
     temperaturaambiente.start()
     print('Inicio Hilo Actualizar PID')
-    threading.Thread(target=control.actualizar,args=(temperaturaambiente,)).start()
+    threading.Thread(target=control.actualizar,args=(temperaturaambiente, temperaturaorgano,)).start()
