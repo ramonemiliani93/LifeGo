@@ -1,4 +1,5 @@
 <Ajuste@BoxLayout>
+    orientation: 'vertical'
     life_go: root
     canvas.before:
         Color:
@@ -6,15 +7,40 @@
         Rectangle:
             pos: root.pos
             size: root.width, root.height
+    AnchorLayout:
+        padding: 20,20,20,20
+        Button:
+            text: '-'
+            font_size: self.height*0.25
+            color: 0,0,0,1
+            background_color: 1,1,1,0
+            on_release: root.parent.parent.disminuirTemperaturaDeseada()
+        Label:
+            canvas:
+                Color:
+                    rgb: 0, 0, 0
+                Line:
+                    width: 1
+                    circle:
+                        self.x+self.width/2, self.y+self.height/2, 50, 0, 360, 180
+    
     Label:
         text: str(root.parent.parent.temperaturaDeseada)
         color: 0, 0, 0, 1
-        font_size: self.height*0.25
-    Button:
-        text: '+'
-        font_size: self.height*0.25
-        on_release: root.parent.parent.aumentarTemperaturaDeseada()
-    Button:
-        text: '-'
-        font_size: self.height*0.25
-        on_release: root.parent.parent.disminuirTemperaturaDeseada()
+        font_size: self.height*0.4
+    AnchorLayout:
+        padding: 20,20,20,20
+        Button:
+            text: '+'
+            font_size: self.height*0.25
+            color: 0,0,0,1
+            background_color: 1,1,1,0
+            on_release: root.parent.parent.aumentarTemperaturaDeseada()
+        Label:
+            canvas:
+                Color:
+                    rgb: 0, 0, 0
+                Line:
+                    width: 1
+                    circle:
+                        self.x+self.width/2, self.y+self.height/2, 50, 0, 360, 180

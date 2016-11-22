@@ -1,1 +1,72 @@
-<Informacion@GridLayout>
+<Informacion@BoxLayout>
+    canvas.before:
+        Color:
+            rgb: 1, 1, 1
+        Rectangle:
+            pos: root.pos
+            size: root.width, root.height
+    orientation: 'horizontal'
+    BoxLayout:
+        padding: 0, 120, 0, 0
+        orientation: 'vertical'
+        Label:
+            canvas:
+                Color:
+                    rgb: 0, 0, 0
+                Line:
+                    width: 1
+                    circle:
+                        self.x+self.width/2, self.y+self.height/2, 50, 0, 360, 180
+            text: root.parent.parent.temperaturaActual
+            font_size: 0.1*self.parent.height
+            size_hint: None, None
+            size: self.parent.width, 13/30*self.parent.height
+            color: 0, 0, 0, 1
+        Label:
+            text: 'Temperatura \n Interna'
+            font_size: 0.06*self.parent.height
+            halign: 'center'
+            color: 0, 0, 0, 1
+    BoxLayout:
+        padding: 0, 120, 0, 0
+        orientation: 'vertical'
+        Label:
+            canvas:
+                Color:
+                    rgb: 0, 0, 0
+                Line:
+                    width: 1
+                    circle:
+                        self.x+self.width/2, self.y+self.height/2, 50, 0, 360, 180
+            text: root.parent.parent.temperaturaOrganoActual
+            font_size: 0.1*self.parent.height
+            size_hint: None, None
+            size: self.parent.width, 13/30*self.parent.height
+            color: 0, 0, 0, 1
+        Label:
+            text: 'Temperatura \n Órgano'
+            halign: 'center'
+            font_size: 0.06*self.parent.height
+            color: 0, 0, 0, 1
+    BoxLayout:
+        padding: 0, 120, 0, 0
+        orientation: 'vertical'
+        Label:
+            canvas:
+                Color:
+                    rgb: 0, 0, 0
+                Line:
+                    width: 1
+                    circle:
+                        self.x+self.width/2, self.y+self.height/2, 50, 0, 360, 180
+            text: root.parent.parent.humedadActual
+            font_size: 0.1*self.parent.height
+            size_hint: None, None
+            size: self.parent.width, 13/30*self.parent.height
+            color: 0, 0, 0, 1
+        Label:
+            text: 'Humedad'
+            valign: 'middle'
+            halign: 'center'
+            font_size: 0.06*self.parent.height
+            color: 0, 0, 0, 1
