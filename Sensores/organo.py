@@ -1,19 +1,13 @@
-
-#ADDRESS_DEVICE = 0x5A
-#ADDRESS_OBJECT = 0x07
-#-NO-I2C.require_repeated_start()
-#sensor = I2C.Device(ADDRESS_DEVICE, 1)
-#print(sensor)
-
-#ByteA = sensor.readU16(ADDRESS_OBJECT)
-
-#print(ByteA/50-273.15)
-
 import threading
 import Adafruit_GPIO.I2C as I2C
 from time import sleep
 
 class TemperaturaOrgano(threading.Thread):
+    """
+    Organ temperature sensor
+    Class to read the sensor and output its
+    temperature to be seen on screen
+    """
 
     def __init__(self):
         threading.Thread.__init__(self)
