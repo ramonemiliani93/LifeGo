@@ -13,6 +13,12 @@ gpsd = None #seting the global variable
 os.system('clear') #clear the terminal (optional)
  
 class GpsPoller(threading.Thread):
+    """
+    GPS sensor
+    Class to read the sensor and output its
+    position to be seen on screen.
+    --Downloaded code from sensor instructions--
+    """
   def __init__(self):
     threading.Thread.__init__(self)
     global gpsd #bring it in scope
