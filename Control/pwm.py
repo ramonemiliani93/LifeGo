@@ -5,7 +5,9 @@ import RPi.GPIO as GPIO
 
 class PWM:
     """
-    Controlador PWM
+    PWM Controller
+    outputs the pulses for the motors to achieve
+    the desired temperature
     """
 
     def __init__(self, frequency, cycleStart, cycle, output):
