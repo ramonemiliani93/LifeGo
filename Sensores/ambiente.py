@@ -4,6 +4,12 @@ from time import sleep
 
 
 class TemperaturaAmbiente(threading.Thread):
+    """
+    Ambient temperature sensor
+    Class to read the sensor and output its
+    temperature to be seen on screen
+    """
+
 
     def __init__(self):
         threading.Thread.__init__(self)
