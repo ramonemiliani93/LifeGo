@@ -27,6 +27,11 @@ Builder.load_file('menu.kv')
 
 
 class LifeGo(AnchorLayout):
+    """
+    LifeGo (Screen)
+    Class to build GUI and read sensors to output
+    their value.
+    """
     temperaturaDeseada = ObjectProperty()
     temperaturaActual = StringProperty()
     humedadActual = StringProperty()
